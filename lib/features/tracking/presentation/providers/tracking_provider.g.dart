@@ -41,7 +41,7 @@ final class TrackingNotifierProvider
   }
 }
 
-String _$trackingNotifierHash() => r'29d931750770946cf55be5015688f546a017ecac';
+String _$trackingNotifierHash() => r'040c55884d5613d8a606174aa6b1646d6c3ddefe';
 
 abstract class _$TrackingNotifier extends $Notifier<TrackingSessionState> {
   TrackingSessionState build();

@@ -166,6 +166,26 @@ class TrackingNotifier extends _$TrackingNotifier {
 
   // ── GPX 路線匯入 ──────────────────────────────────────────
 
+  /// 從 String 載入 GPX（路線資料庫直接傳入）
+  void loadGpxFromString(String content) {
+    final gpxData = GpxReader().fromString(content);
+    final points = gpxData.trks
+        .expand((trk) => trk.trksegs)
+        .expand((seg) => seg.trkpts)
+        .where((pt) => pt.lat != null && pt.lon != null)
+        .map((pt) => TrackPoint(
+              lat: pt.lat!,
+              lng: pt.lon!,
+              elevation: pt.ele,
+              accuracy: 0,
+              timestamp: pt.time ?? DateTime.now(),
+            ))
+        .toList();
+    if (points.isNotEmpty) {
+      state = state.copyWith(referenceRoute: points);
+    }
+  }
+
   /// 選取 .gpx 檔案並解析為參考路線，疊加到地圖
   Future<bool> importGpxRoute() async {
     // iOS 不支援 GPX 為自訂 UTI，改用 FileType.any 後驗證副檔名

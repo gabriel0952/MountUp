@@ -57,14 +57,41 @@ class GearItems extends Table {
   Set<Column> get primaryKey => {id};
 }
 
+class Routes extends Table {
+  TextColumn get id           => text().clientDefault(() => _uuid())();
+  TextColumn get name         => text()();
+  TextColumn get region       => text().nullable()();
+  TextColumn get difficulty   => text().nullable()();
+  RealColumn get distanceKm   => real().nullable()();
+  IntColumn get elevationM    => integer().nullable()();
+  TextColumn get description  => text().nullable()();
+  TextColumn get gpxUrl       => text().nullable()();
+  TextColumn get coverUrl     => text().nullable()();
+  BoolColumn get isOfficial   => boolean().withDefault(const Constant(true))();
+  TextColumn get gpxLocalPath => text().nullable()();
+  DateTimeColumn get cachedAt => dateTime().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
 // ── Database ─────────────────────────────────────────────────
 
-@DriftDatabase(tables: [Activities, ActivityPhotos, GearLists, GearItems])
+@DriftDatabase(tables: [Activities, ActivityPhotos, GearLists, GearItems, Routes])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onUpgrade: (migrator, from, to) async {
+      if (from < 2) {
+        await migrator.createTable(routes);
+      }
+    },
+  );
 
   static QueryExecutor _openConnection() {
     return driftDatabase(name: 'mountup');

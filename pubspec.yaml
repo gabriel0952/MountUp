@@ -52,7 +52,13 @@ dependencies:
   share_plus: ^10.1.4
   gal: ^2.3.0
 
-  # 雲端（P1）
+  # 網路圖片快取
+  cached_network_image: ^3.4.1
+
+  # 網路請求
+  http: ^1.2.2
+
+  # 雲端
   supabase_flutter: ^2.9.1
 
 dev_dependencies:
@@ -69,6 +75,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
-  assets:
-    - assets/routes/

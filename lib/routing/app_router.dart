@@ -4,6 +4,7 @@ import '../features/activity/presentation/pages/activity_create_page.dart';
 import '../features/activity/presentation/pages/activity_detail_page.dart';
 import '../features/activity/presentation/pages/activity_list_page.dart';
 import '../features/gear/presentation/pages/gear_list_page.dart';
+import '../features/routes/presentation/pages/route_detail_page.dart';
 import '../features/routes/presentation/pages/routes_list_page.dart';
 import '../features/settings/presentation/pages/settings_page.dart';
 import '../features/tracking/presentation/pages/tracking_page.dart';
@@ -34,6 +35,14 @@ final appRouter = GoRouter(
         GoRoute(
           path: '/routes',
           builder: (context, state) => const RoutesListPage(),
+          routes: [
+            GoRoute(
+              path: ':id',
+              builder: (context, state) => RouteDetailPage(
+                routeId: state.pathParameters['id']!,
+              ),
+            ),
+          ],
         ),
         GoRoute(
           path: '/gear',
@@ -47,7 +56,9 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/tracking',
-      builder: (context, state) => const TrackingPage(),
+      builder: (context, state) => TrackingPage(
+        preloadGpx: state.extra as String?,
+      ),
     ),
   ],
 );

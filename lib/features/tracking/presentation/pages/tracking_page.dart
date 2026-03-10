@@ -19,7 +19,10 @@ import '../widgets/tracking_stats_overlay.dart';
 import '../widgets/tracking_summary_sheet.dart';
 
 class TrackingPage extends ConsumerStatefulWidget {
-  const TrackingPage({super.key});
+  const TrackingPage({super.key, this.preloadGpx});
+
+  /// 從路線資料庫傳入的 GPX 內容字串，非 null 時自動預載為參考路線
+  final String? preloadGpx;
 
   @override
   ConsumerState<TrackingPage> createState() => _TrackingPageState();
@@ -43,30 +46,47 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
     _refManager = await map.annotations.createPolylineAnnotationManager();
     _trackManager = await map.annotations.createPolylineAnnotationManager();
 
+    // manager 建好後立即載入預載 GPX，不依賴 listener 時序
+    if (widget.preloadGpx != null) {
+      ref
+          .read(trackingProvider.notifier)
+          .loadGpxFromString(widget.preloadGpx!);
+      final refRoute = ref.read(trackingProvider).referenceRoute;
+      if (refRoute.isNotEmpty) await _updateRefRoute(refRoute);
+    }
+
     try {
       final pos = await geo.Geolocator.getCurrentPosition(
         locationSettings: const geo.LocationSettings(
           accuracy: geo.LocationAccuracy.high,
         ),
       );
-      await map.flyTo(
-        CameraOptions(
-          center: Point(coordinates: Position(pos.longitude, pos.latitude)),
-          zoom: 14.0,
-        ),
-        MapAnimationOptions(duration: 1200),
-      );
+      // 有預載路線時不覆蓋視角（_updateRefRoute 已飛至路線起點）
+      if (widget.preloadGpx == null) {
+        await map.flyTo(
+          CameraOptions(
+            center: Point(coordinates: Position(pos.longitude, pos.latitude)),
+            zoom: 15.5,
+          ),
+          MapAnimationOptions(duration: 1200),
+        );
+      }
     } catch (_) {
-      await map.setCamera(
-        CameraOptions(
-          center: Point(coordinates: Position(121.0, 23.7)),
-          zoom: 7.0,
-        ),
-      );
+      if (widget.preloadGpx == null) {
+        await map.setCamera(
+          CameraOptions(
+            center: Point(coordinates: Position(121.0, 23.7)),
+            zoom: 7.0,
+          ),
+        );
+      }
     }
 
-    final refRoute = ref.read(trackingProvider).referenceRoute;
-    if (refRoute.isNotEmpty) _updateRefRoute(refRoute);
+    // 非預載情境：讀現有 referenceRoute（手動匯入後重回追蹤頁）
+    if (widget.preloadGpx == null) {
+      final refRoute = ref.read(trackingProvider).referenceRoute;
+      if (refRoute.isNotEmpty) _updateRefRoute(refRoute);
+    }
   }
 
   // ── 地圖更新 ──────────────────────────────────────────────
@@ -113,7 +133,7 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
       await _mapboxMap?.flyTo(
         CameraOptions(
           center: Point(coordinates: Position(first.lng, first.lat)),
-          zoom: 13.0,
+          zoom: 15.0,
         ),
         MapAnimationOptions(duration: 1000),
       );

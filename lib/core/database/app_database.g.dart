@@ -1823,6 +1823,729 @@ class GearItemsCompanion extends UpdateCompanion<GearItem> {
   }
 }
 
+class $RoutesTable extends Routes with TableInfo<$RoutesTable, Route> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RoutesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: () => _uuid(),
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _regionMeta = const VerificationMeta('region');
+  @override
+  late final GeneratedColumn<String> region = GeneratedColumn<String>(
+    'region',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _difficultyMeta = const VerificationMeta(
+    'difficulty',
+  );
+  @override
+  late final GeneratedColumn<String> difficulty = GeneratedColumn<String>(
+    'difficulty',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _distanceKmMeta = const VerificationMeta(
+    'distanceKm',
+  );
+  @override
+  late final GeneratedColumn<double> distanceKm = GeneratedColumn<double>(
+    'distance_km',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _elevationMMeta = const VerificationMeta(
+    'elevationM',
+  );
+  @override
+  late final GeneratedColumn<int> elevationM = GeneratedColumn<int>(
+    'elevation_m',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _gpxUrlMeta = const VerificationMeta('gpxUrl');
+  @override
+  late final GeneratedColumn<String> gpxUrl = GeneratedColumn<String>(
+    'gpx_url',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _coverUrlMeta = const VerificationMeta(
+    'coverUrl',
+  );
+  @override
+  late final GeneratedColumn<String> coverUrl = GeneratedColumn<String>(
+    'cover_url',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isOfficialMeta = const VerificationMeta(
+    'isOfficial',
+  );
+  @override
+  late final GeneratedColumn<bool> isOfficial = GeneratedColumn<bool>(
+    'is_official',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_official" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _gpxLocalPathMeta = const VerificationMeta(
+    'gpxLocalPath',
+  );
+  @override
+  late final GeneratedColumn<String> gpxLocalPath = GeneratedColumn<String>(
+    'gpx_local_path',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _cachedAtMeta = const VerificationMeta(
+    'cachedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> cachedAt = GeneratedColumn<DateTime>(
+    'cached_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    region,
+    difficulty,
+    distanceKm,
+    elevationM,
+    description,
+    gpxUrl,
+    coverUrl,
+    isOfficial,
+    gpxLocalPath,
+    cachedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'routes';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Route> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('region')) {
+      context.handle(
+        _regionMeta,
+        region.isAcceptableOrUnknown(data['region']!, _regionMeta),
+      );
+    }
+    if (data.containsKey('difficulty')) {
+      context.handle(
+        _difficultyMeta,
+        difficulty.isAcceptableOrUnknown(data['difficulty']!, _difficultyMeta),
+      );
+    }
+    if (data.containsKey('distance_km')) {
+      context.handle(
+        _distanceKmMeta,
+        distanceKm.isAcceptableOrUnknown(data['distance_km']!, _distanceKmMeta),
+      );
+    }
+    if (data.containsKey('elevation_m')) {
+      context.handle(
+        _elevationMMeta,
+        elevationM.isAcceptableOrUnknown(data['elevation_m']!, _elevationMMeta),
+      );
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('gpx_url')) {
+      context.handle(
+        _gpxUrlMeta,
+        gpxUrl.isAcceptableOrUnknown(data['gpx_url']!, _gpxUrlMeta),
+      );
+    }
+    if (data.containsKey('cover_url')) {
+      context.handle(
+        _coverUrlMeta,
+        coverUrl.isAcceptableOrUnknown(data['cover_url']!, _coverUrlMeta),
+      );
+    }
+    if (data.containsKey('is_official')) {
+      context.handle(
+        _isOfficialMeta,
+        isOfficial.isAcceptableOrUnknown(data['is_official']!, _isOfficialMeta),
+      );
+    }
+    if (data.containsKey('gpx_local_path')) {
+      context.handle(
+        _gpxLocalPathMeta,
+        gpxLocalPath.isAcceptableOrUnknown(
+          data['gpx_local_path']!,
+          _gpxLocalPathMeta,
+        ),
+      );
+    }
+    if (data.containsKey('cached_at')) {
+      context.handle(
+        _cachedAtMeta,
+        cachedAt.isAcceptableOrUnknown(data['cached_at']!, _cachedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Route map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Route(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      region: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}region'],
+      ),
+      difficulty: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}difficulty'],
+      ),
+      distanceKm: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}distance_km'],
+      ),
+      elevationM: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}elevation_m'],
+      ),
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      gpxUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}gpx_url'],
+      ),
+      coverUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}cover_url'],
+      ),
+      isOfficial: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_official'],
+      )!,
+      gpxLocalPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}gpx_local_path'],
+      ),
+      cachedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}cached_at'],
+      ),
+    );
+  }
+
+  @override
+  $RoutesTable createAlias(String alias) {
+    return $RoutesTable(attachedDatabase, alias);
+  }
+}
+
+class Route extends DataClass implements Insertable<Route> {
+  final String id;
+  final String name;
+  final String? region;
+  final String? difficulty;
+  final double? distanceKm;
+  final int? elevationM;
+  final String? description;
+  final String? gpxUrl;
+  final String? coverUrl;
+  final bool isOfficial;
+  final String? gpxLocalPath;
+  final DateTime? cachedAt;
+  const Route({
+    required this.id,
+    required this.name,
+    this.region,
+    this.difficulty,
+    this.distanceKm,
+    this.elevationM,
+    this.description,
+    this.gpxUrl,
+    this.coverUrl,
+    required this.isOfficial,
+    this.gpxLocalPath,
+    this.cachedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || region != null) {
+      map['region'] = Variable<String>(region);
+    }
+    if (!nullToAbsent || difficulty != null) {
+      map['difficulty'] = Variable<String>(difficulty);
+    }
+    if (!nullToAbsent || distanceKm != null) {
+      map['distance_km'] = Variable<double>(distanceKm);
+    }
+    if (!nullToAbsent || elevationM != null) {
+      map['elevation_m'] = Variable<int>(elevationM);
+    }
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || gpxUrl != null) {
+      map['gpx_url'] = Variable<String>(gpxUrl);
+    }
+    if (!nullToAbsent || coverUrl != null) {
+      map['cover_url'] = Variable<String>(coverUrl);
+    }
+    map['is_official'] = Variable<bool>(isOfficial);
+    if (!nullToAbsent || gpxLocalPath != null) {
+      map['gpx_local_path'] = Variable<String>(gpxLocalPath);
+    }
+    if (!nullToAbsent || cachedAt != null) {
+      map['cached_at'] = Variable<DateTime>(cachedAt);
+    }
+    return map;
+  }
+
+  RoutesCompanion toCompanion(bool nullToAbsent) {
+    return RoutesCompanion(
+      id: Value(id),
+      name: Value(name),
+      region: region == null && nullToAbsent
+          ? const Value.absent()
+          : Value(region),
+      difficulty: difficulty == null && nullToAbsent
+          ? const Value.absent()
+          : Value(difficulty),
+      distanceKm: distanceKm == null && nullToAbsent
+          ? const Value.absent()
+          : Value(distanceKm),
+      elevationM: elevationM == null && nullToAbsent
+          ? const Value.absent()
+          : Value(elevationM),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      gpxUrl: gpxUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(gpxUrl),
+      coverUrl: coverUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(coverUrl),
+      isOfficial: Value(isOfficial),
+      gpxLocalPath: gpxLocalPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(gpxLocalPath),
+      cachedAt: cachedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(cachedAt),
+    );
+  }
+
+  factory Route.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Route(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      region: serializer.fromJson<String?>(json['region']),
+      difficulty: serializer.fromJson<String?>(json['difficulty']),
+      distanceKm: serializer.fromJson<double?>(json['distanceKm']),
+      elevationM: serializer.fromJson<int?>(json['elevationM']),
+      description: serializer.fromJson<String?>(json['description']),
+      gpxUrl: serializer.fromJson<String?>(json['gpxUrl']),
+      coverUrl: serializer.fromJson<String?>(json['coverUrl']),
+      isOfficial: serializer.fromJson<bool>(json['isOfficial']),
+      gpxLocalPath: serializer.fromJson<String?>(json['gpxLocalPath']),
+      cachedAt: serializer.fromJson<DateTime?>(json['cachedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'region': serializer.toJson<String?>(region),
+      'difficulty': serializer.toJson<String?>(difficulty),
+      'distanceKm': serializer.toJson<double?>(distanceKm),
+      'elevationM': serializer.toJson<int?>(elevationM),
+      'description': serializer.toJson<String?>(description),
+      'gpxUrl': serializer.toJson<String?>(gpxUrl),
+      'coverUrl': serializer.toJson<String?>(coverUrl),
+      'isOfficial': serializer.toJson<bool>(isOfficial),
+      'gpxLocalPath': serializer.toJson<String?>(gpxLocalPath),
+      'cachedAt': serializer.toJson<DateTime?>(cachedAt),
+    };
+  }
+
+  Route copyWith({
+    String? id,
+    String? name,
+    Value<String?> region = const Value.absent(),
+    Value<String?> difficulty = const Value.absent(),
+    Value<double?> distanceKm = const Value.absent(),
+    Value<int?> elevationM = const Value.absent(),
+    Value<String?> description = const Value.absent(),
+    Value<String?> gpxUrl = const Value.absent(),
+    Value<String?> coverUrl = const Value.absent(),
+    bool? isOfficial,
+    Value<String?> gpxLocalPath = const Value.absent(),
+    Value<DateTime?> cachedAt = const Value.absent(),
+  }) => Route(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    region: region.present ? region.value : this.region,
+    difficulty: difficulty.present ? difficulty.value : this.difficulty,
+    distanceKm: distanceKm.present ? distanceKm.value : this.distanceKm,
+    elevationM: elevationM.present ? elevationM.value : this.elevationM,
+    description: description.present ? description.value : this.description,
+    gpxUrl: gpxUrl.present ? gpxUrl.value : this.gpxUrl,
+    coverUrl: coverUrl.present ? coverUrl.value : this.coverUrl,
+    isOfficial: isOfficial ?? this.isOfficial,
+    gpxLocalPath: gpxLocalPath.present ? gpxLocalPath.value : this.gpxLocalPath,
+    cachedAt: cachedAt.present ? cachedAt.value : this.cachedAt,
+  );
+  Route copyWithCompanion(RoutesCompanion data) {
+    return Route(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      region: data.region.present ? data.region.value : this.region,
+      difficulty: data.difficulty.present
+          ? data.difficulty.value
+          : this.difficulty,
+      distanceKm: data.distanceKm.present
+          ? data.distanceKm.value
+          : this.distanceKm,
+      elevationM: data.elevationM.present
+          ? data.elevationM.value
+          : this.elevationM,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      gpxUrl: data.gpxUrl.present ? data.gpxUrl.value : this.gpxUrl,
+      coverUrl: data.coverUrl.present ? data.coverUrl.value : this.coverUrl,
+      isOfficial: data.isOfficial.present
+          ? data.isOfficial.value
+          : this.isOfficial,
+      gpxLocalPath: data.gpxLocalPath.present
+          ? data.gpxLocalPath.value
+          : this.gpxLocalPath,
+      cachedAt: data.cachedAt.present ? data.cachedAt.value : this.cachedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Route(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('region: $region, ')
+          ..write('difficulty: $difficulty, ')
+          ..write('distanceKm: $distanceKm, ')
+          ..write('elevationM: $elevationM, ')
+          ..write('description: $description, ')
+          ..write('gpxUrl: $gpxUrl, ')
+          ..write('coverUrl: $coverUrl, ')
+          ..write('isOfficial: $isOfficial, ')
+          ..write('gpxLocalPath: $gpxLocalPath, ')
+          ..write('cachedAt: $cachedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    name,
+    region,
+    difficulty,
+    distanceKm,
+    elevationM,
+    description,
+    gpxUrl,
+    coverUrl,
+    isOfficial,
+    gpxLocalPath,
+    cachedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Route &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.region == this.region &&
+          other.difficulty == this.difficulty &&
+          other.distanceKm == this.distanceKm &&
+          other.elevationM == this.elevationM &&
+          other.description == this.description &&
+          other.gpxUrl == this.gpxUrl &&
+          other.coverUrl == this.coverUrl &&
+          other.isOfficial == this.isOfficial &&
+          other.gpxLocalPath == this.gpxLocalPath &&
+          other.cachedAt == this.cachedAt);
+}
+
+class RoutesCompanion extends UpdateCompanion<Route> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<String?> region;
+  final Value<String?> difficulty;
+  final Value<double?> distanceKm;
+  final Value<int?> elevationM;
+  final Value<String?> description;
+  final Value<String?> gpxUrl;
+  final Value<String?> coverUrl;
+  final Value<bool> isOfficial;
+  final Value<String?> gpxLocalPath;
+  final Value<DateTime?> cachedAt;
+  final Value<int> rowid;
+  const RoutesCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.region = const Value.absent(),
+    this.difficulty = const Value.absent(),
+    this.distanceKm = const Value.absent(),
+    this.elevationM = const Value.absent(),
+    this.description = const Value.absent(),
+    this.gpxUrl = const Value.absent(),
+    this.coverUrl = const Value.absent(),
+    this.isOfficial = const Value.absent(),
+    this.gpxLocalPath = const Value.absent(),
+    this.cachedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RoutesCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    this.region = const Value.absent(),
+    this.difficulty = const Value.absent(),
+    this.distanceKm = const Value.absent(),
+    this.elevationM = const Value.absent(),
+    this.description = const Value.absent(),
+    this.gpxUrl = const Value.absent(),
+    this.coverUrl = const Value.absent(),
+    this.isOfficial = const Value.absent(),
+    this.gpxLocalPath = const Value.absent(),
+    this.cachedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : name = Value(name);
+  static Insertable<Route> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<String>? region,
+    Expression<String>? difficulty,
+    Expression<double>? distanceKm,
+    Expression<int>? elevationM,
+    Expression<String>? description,
+    Expression<String>? gpxUrl,
+    Expression<String>? coverUrl,
+    Expression<bool>? isOfficial,
+    Expression<String>? gpxLocalPath,
+    Expression<DateTime>? cachedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (region != null) 'region': region,
+      if (difficulty != null) 'difficulty': difficulty,
+      if (distanceKm != null) 'distance_km': distanceKm,
+      if (elevationM != null) 'elevation_m': elevationM,
+      if (description != null) 'description': description,
+      if (gpxUrl != null) 'gpx_url': gpxUrl,
+      if (coverUrl != null) 'cover_url': coverUrl,
+      if (isOfficial != null) 'is_official': isOfficial,
+      if (gpxLocalPath != null) 'gpx_local_path': gpxLocalPath,
+      if (cachedAt != null) 'cached_at': cachedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RoutesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<String?>? region,
+    Value<String?>? difficulty,
+    Value<double?>? distanceKm,
+    Value<int?>? elevationM,
+    Value<String?>? description,
+    Value<String?>? gpxUrl,
+    Value<String?>? coverUrl,
+    Value<bool>? isOfficial,
+    Value<String?>? gpxLocalPath,
+    Value<DateTime?>? cachedAt,
+    Value<int>? rowid,
+  }) {
+    return RoutesCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      region: region ?? this.region,
+      difficulty: difficulty ?? this.difficulty,
+      distanceKm: distanceKm ?? this.distanceKm,
+      elevationM: elevationM ?? this.elevationM,
+      description: description ?? this.description,
+      gpxUrl: gpxUrl ?? this.gpxUrl,
+      coverUrl: coverUrl ?? this.coverUrl,
+      isOfficial: isOfficial ?? this.isOfficial,
+      gpxLocalPath: gpxLocalPath ?? this.gpxLocalPath,
+      cachedAt: cachedAt ?? this.cachedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (region.present) {
+      map['region'] = Variable<String>(region.value);
+    }
+    if (difficulty.present) {
+      map['difficulty'] = Variable<String>(difficulty.value);
+    }
+    if (distanceKm.present) {
+      map['distance_km'] = Variable<double>(distanceKm.value);
+    }
+    if (elevationM.present) {
+      map['elevation_m'] = Variable<int>(elevationM.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (gpxUrl.present) {
+      map['gpx_url'] = Variable<String>(gpxUrl.value);
+    }
+    if (coverUrl.present) {
+      map['cover_url'] = Variable<String>(coverUrl.value);
+    }
+    if (isOfficial.present) {
+      map['is_official'] = Variable<bool>(isOfficial.value);
+    }
+    if (gpxLocalPath.present) {
+      map['gpx_local_path'] = Variable<String>(gpxLocalPath.value);
+    }
+    if (cachedAt.present) {
+      map['cached_at'] = Variable<DateTime>(cachedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoutesCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('region: $region, ')
+          ..write('difficulty: $difficulty, ')
+          ..write('distanceKm: $distanceKm, ')
+          ..write('elevationM: $elevationM, ')
+          ..write('description: $description, ')
+          ..write('gpxUrl: $gpxUrl, ')
+          ..write('coverUrl: $coverUrl, ')
+          ..write('isOfficial: $isOfficial, ')
+          ..write('gpxLocalPath: $gpxLocalPath, ')
+          ..write('cachedAt: $cachedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -1830,6 +2553,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ActivityPhotosTable activityPhotos = $ActivityPhotosTable(this);
   late final $GearListsTable gearLists = $GearListsTable(this);
   late final $GearItemsTable gearItems = $GearItemsTable(this);
+  late final $RoutesTable routes = $RoutesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1839,6 +2563,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     activityPhotos,
     gearLists,
     gearItems,
+    routes,
   ];
 }
 
@@ -3250,6 +3975,345 @@ typedef $$GearItemsTableProcessedTableManager =
       GearItem,
       PrefetchHooks Function({bool gearListId})
     >;
+typedef $$RoutesTableCreateCompanionBuilder =
+    RoutesCompanion Function({
+      Value<String> id,
+      required String name,
+      Value<String?> region,
+      Value<String?> difficulty,
+      Value<double?> distanceKm,
+      Value<int?> elevationM,
+      Value<String?> description,
+      Value<String?> gpxUrl,
+      Value<String?> coverUrl,
+      Value<bool> isOfficial,
+      Value<String?> gpxLocalPath,
+      Value<DateTime?> cachedAt,
+      Value<int> rowid,
+    });
+typedef $$RoutesTableUpdateCompanionBuilder =
+    RoutesCompanion Function({
+      Value<String> id,
+      Value<String> name,
+      Value<String?> region,
+      Value<String?> difficulty,
+      Value<double?> distanceKm,
+      Value<int?> elevationM,
+      Value<String?> description,
+      Value<String?> gpxUrl,
+      Value<String?> coverUrl,
+      Value<bool> isOfficial,
+      Value<String?> gpxLocalPath,
+      Value<DateTime?> cachedAt,
+      Value<int> rowid,
+    });
+
+class $$RoutesTableFilterComposer
+    extends Composer<_$AppDatabase, $RoutesTable> {
+  $$RoutesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get region => $composableBuilder(
+    column: $table.region,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get difficulty => $composableBuilder(
+    column: $table.difficulty,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get distanceKm => $composableBuilder(
+    column: $table.distanceKm,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get elevationM => $composableBuilder(
+    column: $table.elevationM,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get gpxUrl => $composableBuilder(
+    column: $table.gpxUrl,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get coverUrl => $composableBuilder(
+    column: $table.coverUrl,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isOfficial => $composableBuilder(
+    column: $table.isOfficial,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get gpxLocalPath => $composableBuilder(
+    column: $table.gpxLocalPath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get cachedAt => $composableBuilder(
+    column: $table.cachedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RoutesTableOrderingComposer
+    extends Composer<_$AppDatabase, $RoutesTable> {
+  $$RoutesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get region => $composableBuilder(
+    column: $table.region,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get difficulty => $composableBuilder(
+    column: $table.difficulty,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get distanceKm => $composableBuilder(
+    column: $table.distanceKm,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get elevationM => $composableBuilder(
+    column: $table.elevationM,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get gpxUrl => $composableBuilder(
+    column: $table.gpxUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get coverUrl => $composableBuilder(
+    column: $table.coverUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isOfficial => $composableBuilder(
+    column: $table.isOfficial,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get gpxLocalPath => $composableBuilder(
+    column: $table.gpxLocalPath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get cachedAt => $composableBuilder(
+    column: $table.cachedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RoutesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RoutesTable> {
+  $$RoutesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get region =>
+      $composableBuilder(column: $table.region, builder: (column) => column);
+
+  GeneratedColumn<String> get difficulty => $composableBuilder(
+    column: $table.difficulty,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get distanceKm => $composableBuilder(
+    column: $table.distanceKm,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get elevationM => $composableBuilder(
+    column: $table.elevationM,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get gpxUrl =>
+      $composableBuilder(column: $table.gpxUrl, builder: (column) => column);
+
+  GeneratedColumn<String> get coverUrl =>
+      $composableBuilder(column: $table.coverUrl, builder: (column) => column);
+
+  GeneratedColumn<bool> get isOfficial => $composableBuilder(
+    column: $table.isOfficial,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get gpxLocalPath => $composableBuilder(
+    column: $table.gpxLocalPath,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get cachedAt =>
+      $composableBuilder(column: $table.cachedAt, builder: (column) => column);
+}
+
+class $$RoutesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RoutesTable,
+          Route,
+          $$RoutesTableFilterComposer,
+          $$RoutesTableOrderingComposer,
+          $$RoutesTableAnnotationComposer,
+          $$RoutesTableCreateCompanionBuilder,
+          $$RoutesTableUpdateCompanionBuilder,
+          (Route, BaseReferences<_$AppDatabase, $RoutesTable, Route>),
+          Route,
+          PrefetchHooks Function()
+        > {
+  $$RoutesTableTableManager(_$AppDatabase db, $RoutesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RoutesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RoutesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RoutesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> region = const Value.absent(),
+                Value<String?> difficulty = const Value.absent(),
+                Value<double?> distanceKm = const Value.absent(),
+                Value<int?> elevationM = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<String?> gpxUrl = const Value.absent(),
+                Value<String?> coverUrl = const Value.absent(),
+                Value<bool> isOfficial = const Value.absent(),
+                Value<String?> gpxLocalPath = const Value.absent(),
+                Value<DateTime?> cachedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoutesCompanion(
+                id: id,
+                name: name,
+                region: region,
+                difficulty: difficulty,
+                distanceKm: distanceKm,
+                elevationM: elevationM,
+                description: description,
+                gpxUrl: gpxUrl,
+                coverUrl: coverUrl,
+                isOfficial: isOfficial,
+                gpxLocalPath: gpxLocalPath,
+                cachedAt: cachedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                required String name,
+                Value<String?> region = const Value.absent(),
+                Value<String?> difficulty = const Value.absent(),
+                Value<double?> distanceKm = const Value.absent(),
+                Value<int?> elevationM = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<String?> gpxUrl = const Value.absent(),
+                Value<String?> coverUrl = const Value.absent(),
+                Value<bool> isOfficial = const Value.absent(),
+                Value<String?> gpxLocalPath = const Value.absent(),
+                Value<DateTime?> cachedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoutesCompanion.insert(
+                id: id,
+                name: name,
+                region: region,
+                difficulty: difficulty,
+                distanceKm: distanceKm,
+                elevationM: elevationM,
+                description: description,
+                gpxUrl: gpxUrl,
+                coverUrl: coverUrl,
+                isOfficial: isOfficial,
+                gpxLocalPath: gpxLocalPath,
+                cachedAt: cachedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RoutesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RoutesTable,
+      Route,
+      $$RoutesTableFilterComposer,
+      $$RoutesTableOrderingComposer,
+      $$RoutesTableAnnotationComposer,
+      $$RoutesTableCreateCompanionBuilder,
+      $$RoutesTableUpdateCompanionBuilder,
+      (Route, BaseReferences<_$AppDatabase, $RoutesTable, Route>),
+      Route,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -3262,4 +4326,6 @@ class $AppDatabaseManager {
       $$GearListsTableTableManager(_db, _db.gearLists);
   $$GearItemsTableTableManager get gearItems =>
       $$GearItemsTableTableManager(_db, _db.gearItems);
+  $$RoutesTableTableManager get routes =>
+      $$RoutesTableTableManager(_db, _db.routes);
 }
