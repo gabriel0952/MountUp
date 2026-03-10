@@ -5,13 +5,15 @@
       "name": "MountUp (debug)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "debug"
+      "flutterMode": "debug",
+      "args": ["--dart-define=MAPBOX_TOKEN=${env:MAPBOX_TOKEN}"]
     },
     {
       "name": "MountUp (profile)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "profile"
+      "flutterMode": "profile",
+      "args": ["--dart-define=MAPBOX_TOKEN=${env:MAPBOX_TOKEN}"]
     }
   ]
 }

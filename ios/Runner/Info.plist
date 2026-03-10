@@ -4,7 +4,7 @@
 <dict>
 	<!-- Mapbox access token -->
 	<key>MBXAccessToken</key>
-	<string>pk.eyJ1IjoiZ2EwOTUyYnJpZWwiLCJhIjoiY21jaHBoeTd4MHY2ejJxc2NyeGg3eWlhZCJ9.8RtrRPtzqEIadD2aMYAROQ</string>
+	<string>$(MAPBOX_TOKEN)</string>
 
 	<!-- 定位權限 -->
 	<key>NSLocationWhenInUseUsageDescription</key>
