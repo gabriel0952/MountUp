@@ -14,7 +14,8 @@ class ActivityListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final primaryColor = isDark ? AppColors.darkPrimary : AppColors.lightPrimary;
+    final primaryColor =
+        isDark ? AppColors.darkPrimary : AppColors.lightPrimary;
     final activitiesAsync = ref.watch(activityListProvider);
 
     return Scaffold(
@@ -34,31 +35,50 @@ class ActivityListPage extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('$e')),
         data: (activities) => activities.isEmpty
-            ? _EmptyState()
+            ? const _EmptyState()
             : ListView.separated(
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.s16,
                   vertical: AppSpacing.s12,
                 ),
                 itemCount: activities.length,
-                separatorBuilder: (_, _) =>
+                separatorBuilder: (context, index) =>
                     const SizedBox(height: AppSpacing.s12),
                 itemBuilder: (context, i) => ActivityCard(
                   activity: activities[i],
+                  onTap: () =>
+                      context.go('/activities/${activities[i].id}'),
                 ),
               ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.go('/tracking'),
-        backgroundColor: primaryColor,
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.play_arrow_rounded, size: 28),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FloatingActionButton.small(
+            heroTag: 'fab_manual',
+            onPressed: () => context.go('/activities/create'),
+            backgroundColor: theme.colorScheme.secondaryContainer,
+            foregroundColor: theme.colorScheme.onSecondaryContainer,
+            child: const Icon(Icons.edit_rounded),
+          ),
+          const SizedBox(height: AppSpacing.s8),
+          FloatingActionButton(
+            heroTag: 'fab_track',
+            onPressed: () => context.go('/tracking'),
+            backgroundColor: primaryColor,
+            foregroundColor: Colors.white,
+            child: const Icon(Icons.play_arrow_rounded, size: 28),
+          ),
+        ],
       ),
     );
   }
 }
 
 class _EmptyState extends StatelessWidget {
+  const _EmptyState();
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
 
+import '../features/activity/presentation/pages/activity_create_page.dart';
+import '../features/activity/presentation/pages/activity_detail_page.dart';
 import '../features/activity/presentation/pages/activity_list_page.dart';
 import '../features/gear/presentation/pages/gear_list_page.dart';
 import '../features/routes/presentation/pages/routes_list_page.dart';
@@ -16,6 +18,18 @@ final appRouter = GoRouter(
         GoRoute(
           path: '/activities',
           builder: (context, state) => const ActivityListPage(),
+          routes: [
+            GoRoute(
+              path: 'create',
+              builder: (context, state) => const ActivityCreatePage(),
+            ),
+            GoRoute(
+              path: ':id',
+              builder: (context, state) => ActivityDetailPage(
+                activityId: state.pathParameters['id']!,
+              ),
+            ),
+          ],
         ),
         GoRoute(
           path: '/routes',

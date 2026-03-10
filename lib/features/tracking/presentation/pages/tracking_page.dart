@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart' as geo;
@@ -7,6 +10,8 @@ import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_radius.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/database/app_database.dart';
+import '../../../activity/presentation/providers/activity_provider.dart';
 import '../../domain/entities/track_point.dart';
 import '../../domain/entities/tracking_session_state.dart';
 import '../providers/tracking_provider.dart';
@@ -203,9 +208,27 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
         builder: (_) => TrackingSummarySheet(
           state: state,
           onSave: (title) async {
-            Navigator.pop(context);
+            final navigator = Navigator.of(context);
+            final router = GoRouter.of(context);
+            final trackJson = state.trackPoints.isEmpty
+                ? null
+                : jsonEncode(
+                    state.trackPoints.map((p) => p.toJson()).toList());
+            final companion = ActivitiesCompanion.insert(
+              title: title,
+              date: DateTime.now(),
+              distanceKm: Value(state.distanceKm),
+              elevationM: Value(state.elevationGainM.round()),
+              durationS: Value(state.elapsedSeconds),
+              trackJson: Value(trackJson),
+            );
+            await ref
+                .read(activityRepositoryProvider)
+                .save(companion);
+            ref.invalidate(activityListProvider);
             ref.read(trackingProvider.notifier).reset();
-            context.go('/activities');
+            navigator.pop();
+            router.go('/activities');
           },
           onDiscard: () {
             Navigator.pop(context);
