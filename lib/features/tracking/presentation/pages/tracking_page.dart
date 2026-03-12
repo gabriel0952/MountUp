@@ -36,6 +36,9 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
   bool _mapUpdating = false;
   bool _refUpdating = false;
 
+  // 最新 GPS 座標，供「回到當前位置」按鈕使用
+  TrackPoint? _lastTrackPoint;
+
   // 追蹤結束時的最終狀態快照，確保摘要資料正確
   TrackingSessionState? _stoppedState;
 
@@ -48,9 +51,7 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
 
     // manager 建好後立即載入預載 GPX，不依賴 listener 時序
     if (widget.preloadGpx != null) {
-      ref
-          .read(trackingProvider.notifier)
-          .loadGpxFromString(widget.preloadGpx!);
+      ref.read(trackingProvider.notifier).loadGpxFromString(widget.preloadGpx!);
       final refRoute = ref.read(trackingProvider).referenceRoute;
       if (refRoute.isNotEmpty) await _updateRefRoute(refRoute);
     }
@@ -66,7 +67,7 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
         await map.flyTo(
           CameraOptions(
             center: Point(coordinates: Position(pos.longitude, pos.latitude)),
-            zoom: 15.5,
+            zoom: 18,
           ),
           MapAnimationOptions(duration: 1200),
         );
@@ -99,16 +100,14 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
       await _trackManager!.create(
         PolylineAnnotationOptions(
           geometry: LineString(
-              coordinates: points.map((p) => Position(p.lng, p.lat)).toList()),
-          lineColor: const Color(0xFF4CAF82).toARGB32(),
+            coordinates: points.map((p) => Position(p.lng, p.lat)).toList(),
+          ),
+          lineColor: const Color(0xFFFF5722).toARGB32(),
           lineWidth: 3.5,
           lineJoin: LineJoin.ROUND,
         ),
       );
-      final last = points.last;
-      await _mapboxMap?.setCamera(CameraOptions(
-        center: Point(coordinates: Position(last.lng, last.lat)),
-      ));
+      _lastTrackPoint = points.last;
     } finally {
       _mapUpdating = false;
     }
@@ -123,7 +122,8 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
       await _refManager!.create(
         PolylineAnnotationOptions(
           geometry: LineString(
-              coordinates: points.map((p) => Position(p.lng, p.lat)).toList()),
+            coordinates: points.map((p) => Position(p.lng, p.lat)).toList(),
+          ),
           lineColor: const Color(0xFF42A5F5).toARGB32(),
           lineWidth: 2.5,
           lineJoin: LineJoin.ROUND,
@@ -133,13 +133,46 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
       await _mapboxMap?.flyTo(
         CameraOptions(
           center: Point(coordinates: Position(first.lng, first.lat)),
-          zoom: 15.0,
+          zoom: 18,
         ),
         MapAnimationOptions(duration: 1000),
       );
     } finally {
       _refUpdating = false;
     }
+  }
+
+  // ── 回到當前位置 ──────────────────────────────────────────
+
+  Future<void> _locateMe() async {
+    // 追蹤中：飛至最新 GPS 點
+    if (_lastTrackPoint != null) {
+      await _mapboxMap?.flyTo(
+        CameraOptions(
+          center: Point(
+            coordinates: Position(_lastTrackPoint!.lng, _lastTrackPoint!.lat),
+          ),
+          zoom: 18,
+        ),
+        MapAnimationOptions(duration: 600),
+      );
+      return;
+    }
+    // 待機中：取當前裝置位置
+    try {
+      final pos = await geo.Geolocator.getCurrentPosition(
+        locationSettings: const geo.LocationSettings(
+          accuracy: geo.LocationAccuracy.high,
+        ),
+      );
+      await _mapboxMap?.flyTo(
+        CameraOptions(
+          center: Point(coordinates: Position(pos.longitude, pos.latitude)),
+          zoom: 18,
+        ),
+        MapAnimationOptions(duration: 800),
+      );
+    } catch (_) {}
   }
 
   // ── 操作 ──────────────────────────────────────────────────
@@ -152,9 +185,9 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
   Future<void> _handleImportGpx() async {
     final ok = await ref.read(trackingProvider.notifier).importGpxRoute();
     if (!ok && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('請選取 .gpx 檔案')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('請選取 .gpx 檔案')));
     }
   }
 
@@ -222,8 +255,9 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
         enableDrag: false,
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(AppRadius.xl),
+          ),
         ),
         builder: (_) => TrackingSummarySheet(
           state: state,
@@ -232,8 +266,7 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
             final router = GoRouter.of(context);
             final trackJson = state.trackPoints.isEmpty
                 ? null
-                : jsonEncode(
-                    state.trackPoints.map((p) => p.toJson()).toList());
+                : jsonEncode(state.trackPoints.map((p) => p.toJson()).toList());
             final companion = ActivitiesCompanion.insert(
               title: title,
               date: DateTime.now(),
@@ -242,9 +275,7 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
               durationS: Value(state.elapsedSeconds),
               trackJson: Value(trackJson),
             );
-            await ref
-                .read(activityRepositoryProvider)
-                .save(companion);
+            await ref.read(activityRepositoryProvider).save(companion);
             ref.invalidate(activityListProvider);
             ref.read(trackingProvider.notifier).reset();
             navigator.pop();
@@ -360,7 +391,7 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
               ),
             ),
 
-          // ── 追蹤中：底部操作列（返回 ← ⏹ 結束）─────────
+          // ── 追蹤中：底部操作列（返回 ← ⏹ 結束 → 定位）─────────
           if (isActive)
             Positioned(
               bottom: AppSpacing.s32,
@@ -380,7 +411,24 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
                     onTap: () =>
                         ref.read(trackingProvider.notifier).stopTracking(),
                   ),
+                  _MapButton(
+                    icon: Icons.my_location_rounded,
+                    tooltip: '回到當前位置',
+                    onTap: _locateMe,
+                  ),
                 ],
+              ),
+            ),
+
+          // ── 待機：定位按鈕（右下角）─────────────────────
+          if (isIdle)
+            Positioned(
+              bottom: AppSpacing.s48,
+              right: AppSpacing.s16,
+              child: _MapButton(
+                icon: Icons.my_location_rounded,
+                tooltip: '回到當前位置',
+                onTap: _locateMe,
               ),
             ),
         ],
@@ -392,11 +440,7 @@ class _TrackingPageState extends ConsumerState<TrackingPage> {
 // ── 地圖圓形按鈕（白底陰影）──────────────────────────────────
 
 class _MapButton extends StatelessWidget {
-  const _MapButton({
-    required this.icon,
-    required this.onTap,
-    this.tooltip,
-  });
+  const _MapButton({required this.icon, required this.onTap, this.tooltip});
 
   final IconData icon;
   final VoidCallback onTap;

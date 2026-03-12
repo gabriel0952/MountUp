@@ -202,7 +202,7 @@ class _GpxMapPreviewState extends State<_GpxMapPreview> {
     await mgr.create(PolylineAnnotationOptions(
       geometry: LineString(
           coordinates: points.map((p) => Position(p.$2, p.$1)).toList()),
-      lineColor: const Color(0xFF4CAF82).toARGB32(),
+      lineColor: const Color(0xFFFF5722).toARGB32(),
       lineWidth: 3.5,
       lineJoin: LineJoin.ROUND,
     ));

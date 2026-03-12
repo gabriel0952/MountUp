@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../features/activity/presentation/pages/activity_create_page.dart';
 import '../features/activity/presentation/pages/activity_detail_page.dart';
 import '../features/activity/presentation/pages/activity_list_page.dart';
+import '../features/share/presentation/pages/share_card_page.dart';
 import '../features/gear/presentation/pages/gear_list_page.dart';
 import '../features/routes/presentation/pages/route_detail_page.dart';
 import '../features/routes/presentation/pages/routes_list_page.dart';
@@ -29,6 +30,14 @@ final appRouter = GoRouter(
               builder: (context, state) => ActivityDetailPage(
                 activityId: state.pathParameters['id']!,
               ),
+              routes: [
+                GoRoute(
+                  path: 'share',
+                  builder: (context, state) => ShareCardPage(
+                    activityId: state.pathParameters['id']!,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

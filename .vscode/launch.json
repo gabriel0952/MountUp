@@ -6,14 +6,14 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
-      "args": ["--dart-define=MAPBOX_TOKEN=${env:MAPBOX_TOKEN}"]
+      "args": ["--dart-define-from-file=dart_defines.json"]
     },
     {
       "name": "MountUp (profile)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile",
-      "args": ["--dart-define=MAPBOX_TOKEN=${env:MAPBOX_TOKEN}"]
+      "args": ["--dart-define-from-file=dart_defines.json"]
     }
   ]
 }

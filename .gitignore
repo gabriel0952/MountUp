@@ -46,5 +46,6 @@ app.*.map.json
 android/build/
 
 # Environment / secrets
-lib/core/constants/env.dart
+# dart_defines.json 存放本機真實金鑰，不 commit（複製 dart_defines.example.json 建立）
+dart_defines.json
 ios/Flutter/Secrets.xcconfig
